@@ -1,4 +1,6 @@
+import { Inbox, Send, Settings, CheckCircle2, AlertTriangle, Mailbox } from "lucide-react";
 import { TIMELINE_STEPS, NOTIFICATION_STATUS } from "../constants";
+import { KafkaIcon } from "./icons/KafkaIcon";
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -33,14 +35,14 @@ const getTimestamp = (stepId, statusHistory) => {
 // ── Node circle ───────────────────────────────────────────────
 
 const TimelineNode = ({ state, icon }) => {
-  const base = "w-9 h-9 rounded-full border-2 flex items-center justify-center text-base flex-shrink-0 transition-all duration-500 z-10";
+  const base = "w-9 h-9 rounded-full border flex items-center justify-center text-sm flex-shrink-0 transition-all duration-500 z-10";
 
   const styles = {
-    done:    "bg-green-400/15 border-green-400 shadow-[0_0_10px_rgba(16,185,129,0.25)]",
-    active:  "bg-accent/20 border-accent shadow-[0_0_14px_rgba(99,102,241,0.35)] animate-pulse",
-    pending: "bg-surface2 border-border opacity-40",
-    failed:  "bg-red-400/15 border-red-400",
-    dlq:     "bg-red-400/15 border-red-400",
+    done:    "bg-emerald-500/10 border-emerald-500 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.15)]",
+    active:  "bg-accent/15 border-accent text-accent animate-pulse shadow-[0_0_14px_rgba(99,102,241,0.25)]",
+    pending: "bg-surface2/60 border-border text-slate-600 opacity-55",
+    failed:  "bg-rose-500/10 border-rose-500 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.15)]",
+    dlq:     "bg-rose-500/10 border-rose-500 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.15)]",
   };
 
   return (
@@ -56,7 +58,12 @@ const TimelineNode = ({ state, icon }) => {
           <path d="M21 12a9 9 0 1 1-6.219-8.56" />
         </svg>
       ) : (
-        <span>{icon}</span>
+        <span>
+          {icon === "inbox" && <Inbox className="w-4 h-4" />}
+          {icon === "send" && <Send className="w-4 h-4" />}
+          {icon === "settings" && <Settings className="w-4 h-4" />}
+          {icon === "check-circle" && <CheckCircle2 className="w-4 h-4" />}
+        </span>
       )}
     </div>
   );
@@ -67,13 +74,13 @@ const TimelineNode = ({ state, icon }) => {
 const ConnectorLine = ({ topState, bottomState }) => {
   const filled = topState === "done" || topState === "active";
   return (
-    <div className="w-px h-10 mx-auto relative overflow-hidden bg-border">
+    <div className="w-[1px] h-10 mx-auto relative overflow-hidden bg-border">
       <div
         className={`absolute top-0 left-0 w-full transition-all duration-700 ease-in-out
           ${filled ? "h-full" : "h-0"}
           ${topState === "active"
             ? "bg-gradient-to-b from-accent to-border"
-            : "bg-green-400"
+            : "bg-emerald-500"
           }`}
       />
     </div>
@@ -84,11 +91,11 @@ const ConnectorLine = ({ topState, bottomState }) => {
 
 const TimelineRow = ({ step, state, timestamp, isLast }) => {
   const labelStyles = {
-    done:    "text-white",
-    active:  "text-accent2",
-    pending: "text-muted",
-    failed:  "text-red-400",
-    dlq:     "text-red-400",
+    done:    "text-white font-semibold",
+    active:  "text-accent2 font-bold",
+    pending: "text-muted font-medium",
+    failed:  "text-rose-400 font-bold",
+    dlq:     "text-rose-400 font-bold",
   };
 
   return (
@@ -100,31 +107,32 @@ const TimelineRow = ({ step, state, timestamp, isLast }) => {
       </div>
 
       {/* Right: content */}
-      <div className={`pb-8 pt-1 transition-all duration-300 ${isLast ? "pb-0" : ""}`}>
-        <p className={`text-sm font-semibold transition-colors duration-300 ${labelStyles[state] ?? labelStyles.pending}`}>
+      <div className={`pb-8 pt-0.5 transition-all duration-300 ${isLast ? "pb-0" : ""}`}>
+        <p className={`text-xs transition-colors duration-300 ${labelStyles[state] ?? labelStyles.pending}`}>
           {step.label}
         </p>
-        <p className="text-xs text-muted mt-0.5">{step.sub}</p>
+        <p className="text-[11px] text-muted mt-0.5 leading-relaxed">{step.sub}</p>
 
         {/* Kafka topic badge */}
-        <span className="inline-block mt-1.5 text-[10px] font-mono text-amber-400 bg-amber-400/8 border border-amber-400/20 px-2 py-0.5 rounded">
+        <span className="inline-flex items-center gap-1.5 mt-2 text-[9px] font-mono font-semibold text-amber-400 bg-amber-500/5 border border-amber-500/20 px-2 py-0.5 rounded">
+          <KafkaIcon className="w-3 h-3 text-amber-400" />
           {step.topic}
         </span>
 
         {/* Timestamp or spinner */}
         {state === "active" && (
-          <p className="text-[11px] font-mono text-accent mt-1.5 flex items-center gap-1.5">
+          <p className="text-[10px] font-mono text-accent mt-2 flex items-center gap-1.5 font-bold uppercase tracking-wider">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-ping inline-block" />
             Processing…
           </p>
         )}
         {state === "done" && timestamp && (
-          <p className="text-[11px] font-mono text-green-400 mt-1.5">
+          <p className="text-[10px] font-mono text-emerald-400 mt-2 font-bold">
             ✓ {timestamp}
           </p>
         )}
         {state === "pending" && (
-          <p className="text-[11px] font-mono text-muted mt-1.5">
+          <p className="text-[10px] font-mono text-muted mt-2 font-bold uppercase tracking-wider">
             Waiting…
           </p>
         )}
@@ -136,13 +144,15 @@ const TimelineRow = ({ step, state, timestamp, isLast }) => {
 // ── Failed / DLQ banners ──────────────────────────────────────
 
 const FailedBanner = ({ isDLQ }) => (
-  <div className="mt-4 flex items-start gap-3 bg-red-400/10 border border-red-400/25 rounded-lg px-4 py-3">
-    <span className="text-lg">⚠️</span>
+  <div className="mt-5 flex items-start gap-3 bg-rose-500/5 border border-rose-500/20 rounded-xl px-4 py-3.5">
+    <span className="text-base text-rose-400 mt-0.5">
+      <AlertTriangle className="w-5 h-5" />
+    </span>
     <div>
-      <p className="text-sm font-semibold text-red-400">
-        {isDLQ ? "Moved to Dead Letter Queue" : "Delivery failed"}
+      <p className="text-xs font-bold font-heading text-rose-400">
+        {isDLQ ? "Moved to Dead Letter Queue" : "Delivery Failed"}
       </p>
-      <p className="text-xs text-muted mt-0.5">
+      <p className="text-[11px] text-muted mt-1 leading-relaxed">
         {isDLQ
           ? "This notification failed 3 times and has been moved to DLQ."
           : "Delivery failed. Notiq will retry automatically (up to 3 times)."}
@@ -154,10 +164,12 @@ const FailedBanner = ({ isDLQ }) => (
 // ── Empty state ───────────────────────────────────────────────
 
 const EmptyState = () => (
-  <div className="flex flex-col items-center justify-center py-14 gap-3 text-center">
-    <span className="text-4xl opacity-25">📭</span>
-    <p className="text-sm text-muted">No notification sent yet.</p>
-    <p className="text-xs text-muted opacity-60">
+  <div className="flex flex-col items-center justify-center py-16 gap-3 text-center select-none">
+    <span className="text-muted opacity-40">
+      <Mailbox className="w-10 h-10" />
+    </span>
+    <p className="text-xs font-semibold text-muted">No notification sent yet.</p>
+    <p className="text-[11px] text-muted opacity-60 leading-relaxed">
       Fill the form and hit send to watch<br />the live pipeline.
     </p>
   </div>
@@ -174,17 +186,17 @@ const DeliveryTimeline = ({ eventId, statusHistory, currentStatus, isConnected, 
   return (
     <div>
       {/* EventId badge */}
-      <div className="mb-5 flex items-center gap-2 flex-wrap">
-        <span className="text-[10px] font-mono text-muted uppercase tracking-wider">
+      <div className="mb-6 flex items-center gap-2 flex-wrap">
+        <span className="text-[10px] font-bold font-mono text-muted uppercase tracking-wider">
           Event ID
         </span>
-        <code className="text-[11px] font-mono text-accent2 bg-surface2 border border-border px-2 py-0.5 rounded">
+        <code className="text-[11px] font-mono text-accent2 bg-surface2 border border-border px-2 py-0.5 rounded select-all font-semibold">
           {eventId}
         </code>
       </div>
 
       {/* Steps */}
-      <div>
+      <div className="space-y-1">
         {TIMELINE_STEPS.map((step, i) => {
           const state     = getStepState(step.id, statusHistory, currentStatus);
           const timestamp = getTimestamp(step.id, statusHistory);
@@ -204,7 +216,7 @@ const DeliveryTimeline = ({ eventId, statusHistory, currentStatus, isConnected, 
 
       {/* Error from WS */}
       {error && (
-        <div className="mt-4 text-xs text-red-400 font-mono bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
+        <div className="mt-5 text-xs text-rose-400 font-mono bg-rose-500/5 border border-rose-500/20 rounded-lg px-3 py-2.5">
           {error}
         </div>
       )}
@@ -214,13 +226,13 @@ const DeliveryTimeline = ({ eventId, statusHistory, currentStatus, isConnected, 
 
       {/* Delivered celebration */}
       {currentStatus === NOTIFICATION_STATUS.DELIVERED && (
-        <div className="mt-4 flex items-start gap-3 bg-green-400/10 border border-green-400/25 rounded-lg px-4 py-3">
-          <span className="text-lg">🎉</span>
+        <div className="mt-5 flex items-start gap-3 bg-emerald-500/5 border border-emerald-500/20 rounded-xl px-4 py-3.5">
+          <span className="text-base">🎉</span>
           <div>
-            <p className="text-sm font-semibold text-green-400">
-              Notification delivered!
+            <p className="text-xs font-bold font-heading text-emerald-400">
+              Notification Delivered!
             </p>
-            <p className="text-xs text-muted mt-0.5">
+            <p className="text-[11px] text-muted mt-1 leading-relaxed">
               Your message was successfully delivered to the recipient.
             </p>
           </div>

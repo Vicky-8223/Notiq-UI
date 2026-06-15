@@ -7,7 +7,7 @@ import DeliveryTimeline from "../components/DeliveryTimeline";
 // ── Small reusable field components ──────────────────────────
 
 const FormLabel = ({ children }) => (
-  <label className="block text-[11px] font-mono text-muted uppercase tracking-wider mb-1.5">
+  <label className="block text-[10px] font-bold font-mono text-muted uppercase tracking-wider mb-1.5">
     {children}
   </label>
 );
@@ -15,17 +15,24 @@ const FormLabel = ({ children }) => (
 const FormInput = ({ ...props }) => (
   <input
     {...props}
-    className="w-full bg-surface2 border border-border rounded-md px-3 py-2 text-sm text-white placeholder-muted outline-none focus:border-accent transition-colors duration-150"
+    className="w-full bg-surface2/60 border border-border rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20 transition-all duration-150 font-medium"
   />
 );
 
 const FormSelect = ({ children, ...props }) => (
-  <select
-    {...props}
-    className="w-full bg-surface2 border border-border rounded-md px-3 py-2 text-sm text-white outline-none focus:border-accent transition-colors duration-150 cursor-pointer appearance-none"
-  >
-    {children}
-  </select>
+  <div className="relative">
+    <select
+      {...props}
+      className="w-full bg-surface2/60 border border-border rounded-lg px-3.5 py-2.5 text-xs text-white outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20 transition-all duration-150 cursor-pointer appearance-none font-medium"
+    >
+      {children}
+    </select>
+    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-muted">
+      <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+      </svg>
+    </div>
+  </div>
 );
 
 // ── Key-value payload builder ─────────────────────────────────
@@ -48,14 +55,14 @@ const PayloadBuilder = ({ pairs, onChange }) => {
             placeholder="key"
             value={pair.key}
             onChange={(e) => updateRow(i, "key", e.target.value)}
-            className="flex-1 bg-surface2 border border-border rounded-md px-3 py-2 text-sm text-white placeholder-muted outline-none focus:border-accent transition-colors font-mono"
+            className="flex-1 bg-surface2/60 border border-border rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 outline-none focus:border-accent/60 transition-all font-mono"
           />
           <span className="text-muted text-xs font-mono">:</span>
           <input
             placeholder="value"
             value={pair.value}
             onChange={(e) => updateRow(i, "value", e.target.value)}
-            className="flex-1 bg-surface2 border border-border rounded-md px-3 py-2 text-sm text-white placeholder-muted outline-none focus:border-accent transition-colors font-mono"
+            className="flex-1 bg-surface2/60 border border-border rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 outline-none focus:border-accent/60 transition-all font-mono"
           />
           <button
             onClick={() => removeRow(i)}
@@ -70,7 +77,7 @@ const PayloadBuilder = ({ pairs, onChange }) => {
       ))}
       <button
         onClick={addRow}
-        className="flex items-center gap-1.5 text-xs text-accent2 hover:text-white transition-colors mt-1"
+        className="flex items-center gap-1.5 text-xs text-accent2 hover:text-white transition-colors mt-1 font-semibold"
       >
         <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
           <line x1="12" y1="5" x2="12" y2="19" />
@@ -96,27 +103,27 @@ const RequestPreview = ({ payload }) => {
   return (
     <div className="mt-5">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[10px] font-mono text-muted uppercase tracking-wider">
-          Request preview
+        <span className="text-[10px] font-bold font-mono text-muted uppercase tracking-wider">
+          Request Payload JSON
         </span>
         <button
           onClick={copy}
-          className="text-[10px] font-mono text-muted hover:text-accent2 transition-colors flex items-center gap-1"
+          className="text-[10px] font-mono text-accent2 hover:text-white transition-colors flex items-center gap-1 font-semibold"
         >
           {copied ? (
-            <span className="text-green-400">✓ Copied</span>
+            <span className="text-emerald-400">✓ Copied</span>
           ) : (
             <>
-              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <rect x="9" y="9" width="13" height="13" rx="2" />
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
               </svg>
-              Copy
+              Copy JSON
             </>
           )}
         </button>
       </div>
-      <pre className="bg-[#0d1424] border border-border rounded-lg p-3 text-xs font-mono text-slate-300 overflow-x-auto max-h-40 leading-relaxed">
+      <pre className="bg-[#0b0f19] border border-border rounded-lg p-3 text-xs font-mono text-slate-300 overflow-x-auto max-h-40 leading-relaxed">
         {JSON.stringify(payload, null, 2)}
       </pre>
     </div>
@@ -164,7 +171,7 @@ const Playground = () => {
       setEventId(id);
     } catch (err) {
       setSendError(
-        err?.response?.data?.message ?? "Failed to send. Is your backend running?"
+        err?.response?.data?.message ?? "Failed to send, Seems to be the Server is still spinning up. Please try again in a moment."
       );
     } finally {
       setSending(false);
@@ -179,27 +186,31 @@ const Playground = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-8 py-8">
+    <div className="max-w-5xl mx-auto px-6 py-10 lg:py-12">
+      <span className="text-[15px] text-amber-400 font-mono bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+        Still SMS and In-App channels are not wired.Only Email channel is functional for now. Please use EMAIL channel to test the Playground.
+      </span>
       {/* Header */}
-      <p className="font-mono text-[11px] text-accent uppercase tracking-widest mb-2">
-        Interactive Playground
-      </p>
-      <h2 className="text-xl font-semibold text-white mb-1">
-        Send a test notification
-      </h2>
-      <p className="text-sm text-muted mb-8">
-        Fill in the form and watch the notification travel through Notiq's
-        pipeline in real time.
-      </p>
+      <div className="space-y-1 mb-8">
+        <p className="font-mono text-[10px] text-accent uppercase tracking-widest font-bold">
+          Interactive Playground
+        </p>
+        <h2 className="text-2xl font-bold font-heading text-white">
+          Send a test notification
+        </h2>
+        <p className="text-xs text-muted">
+          Fill in the form and watch the notification travel through Notiq's pipeline in real time.
+        </p>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
         {/* ── Left: Form panel ── */}
-        <div className="bg-surface border border-border rounded-xl p-6">
-          <div className="flex items-center gap-2 mb-5">
-            <div className="w-2 h-2 rounded-full bg-accent" />
-            <span className="text-sm font-semibold text-white">
-              Compose notification
+        <div className="bg-surface border border-border rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-1.5 h-1.5 rounded-full bg-accent animate-ping" />
+            <span className="text-xs font-bold font-heading text-white uppercase tracking-wider">
+              Compose Notification
             </span>
           </div>
 
@@ -225,7 +236,7 @@ const Playground = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
               <FormLabel>Channel</FormLabel>
               <FormSelect
@@ -234,7 +245,7 @@ const Playground = () => {
                 disabled={sending}
               >
                 {CHANNEL_OPTIONS.map((c) => (
-                  <option key={c.value} value={c.value} disabled={!c.available}>
+                  <option key={c.value} value={c.value} className="bg-surface2" disabled={!c.available}>
                     {c.label}
                   </option>
                 ))}
@@ -248,24 +259,24 @@ const Playground = () => {
                 disabled={sending}
               >
                 {PRIORITY_OPTIONS.map((p) => (
-                  <option key={p} value={p}>{p}</option>
+                  <option key={p} className="bg-surface2" value={p}>{p}</option>
                 ))}
               </FormSelect>
             </div>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-6">
             <div className="flex items-center justify-between mb-1.5">
               <FormLabel>Payload</FormLabel>
-              <span className="text-[10px] text-amber-400 font-mono bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded">
+              {/* <span className="text-[9px] text-amber-400 font-mono bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider">
                 not yet wired to email
-              </span>
+              </span> */}
             </div>
             <PayloadBuilder pairs={pairs} onChange={setPairs} />
           </div>
 
           {sendError && (
-            <div className="mb-4 text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2 font-mono">
+            <div className="mb-4 text-xs text-rose-400 bg-rose-500/5 border border-rose-500/20 rounded-lg px-3 py-2.5 font-mono">
               {sendError}
             </div>
           )}
@@ -274,11 +285,11 @@ const Playground = () => {
             <button
               onClick={handleSend}
               disabled={sending || !recipient.trim()}
-              className="w-full bg-accent hover:bg-accent2 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors duration-150 flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-accent to-indigo-600 hover:from-accent hover:to-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-4 py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(99,102,241,0.25)]"
             >
               {sending ? (
                 <>
-                  <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                     <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                   </svg>
                   Sending…
@@ -289,20 +300,20 @@ const Playground = () => {
                     <line x1="22" y1="2" x2="11" y2="13" />
                     <polygon points="22 2 15 22 11 13 2 9 22 2" />
                   </svg>
-                  Send notification
+                  Send Notification
                 </>
               )}
             </button>
           ) : (
             <button
               onClick={handleReset}
-              className="w-full bg-surface2 hover:bg-border text-white text-sm font-semibold px-4 py-2.5 rounded-lg border border-border transition-colors duration-150 flex items-center justify-center gap-2"
+              className="w-full bg-surface2 hover:bg-border text-white text-xs font-semibold px-4 py-3 rounded-lg border border-border transition-all duration-150 flex items-center justify-center gap-2"
             >
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <polyline points="1 4 1 10 7 10" />
                 <path d="M3.51 15a9 9 0 1 0 .49-3.5" />
               </svg>
-              Send another
+              Send Another
             </button>
           )}
 
@@ -310,28 +321,27 @@ const Playground = () => {
         </div>
 
         {/* ── Right: Timeline panel ── */}
-        <div className="bg-surface border border-border rounded-xl p-6">
-          <div className="flex items-center justify-between mb-5">
+        <div className="bg-surface border border-border rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-400" />
-              <span className="text-sm font-semibold text-white">
-                Delivery timeline
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="text-xs font-bold font-heading text-white uppercase tracking-wider">
+                Delivery Timeline
               </span>
             </div>
             {eventId && (
-              <div className={`flex items-center gap-1.5 text-[10px] font-mono px-2 py-1 rounded-full border
+              <div className={`flex items-center gap-1.5 text-[9px] font-mono px-2.5 py-1 rounded-full border font-semibold
                 ${isConnected
-                  ? "text-green-400 bg-green-400/10 border-green-400/25"
-                  : "text-amber-400 bg-amber-400/10 border-amber-400/25"
+                  ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                  : "text-amber-400 bg-amber-500/10 border-amber-500/20"
                 }`}
               >
-                <span className={`w-1.5 h-1.5 rounded-full ${isConnected ? "bg-green-400 animate-pulse" : "bg-amber-400"}`} />
-                {isConnected ? "Live" : "Connecting…"}
+                <span className={`w-1 h-1 rounded-full ${isConnected ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} />
+                {isConnected ? "LIVE" : "CONNECTING…"}
               </div>
             )}
           </div>
 
-          {/* ✅ Real DeliveryTimeline — no stub */}
           <DeliveryTimeline
             eventId={eventId}
             statusHistory={statusHistory}

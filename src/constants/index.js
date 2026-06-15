@@ -12,34 +12,34 @@ export const TIMELINE_STEPS = [
     label: "Received by core",
     sub:   "Persisted to database",
     topic: "notification-request",
-    icon:  "📥",
+    icon:  "inbox",
   },
   {
     id:    "DISPATCHED",
     label: "Dispatched",
     sub:   "Routed to respective channel",
     topic: "notification-dispatched",
-    icon:  "📤",
+    icon:  "send",
   },
   {
     id:    "PROCESSING",
     label: "Processing",
     sub:   "Email/SMS/Push service picked up the event",
     topic: "email-request/sms-request/push-request",
-    icon:  "⚙️",
+    icon:  "settings",
   },
   {
     id:    "DELIVERED",
     label: "Delivered",
     sub:   "Message delivered to recipient",
     topic: "notification-delivered",
-    icon:  "✅",
+    icon:  "check-circle",
   },
 ];
 export const NAV_ITEMS = [
     {id: "overview" , label: "Overview", icon: "grid"},
     {id: "docs",label:"Documentation",icon:"book"},
-    {id: "playgroud",label: "Playground", icon: "code"},
+    {id: "playground",label: "Playground", icon: "code"},
 ];
 export const PRIORITY_OPTIONS = ["HIGH", "MEDIUM", "LOW"];
 export const CHANNEL_OPTIONS = [

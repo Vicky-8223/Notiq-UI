@@ -25,6 +25,7 @@ export const useNotificationSocket = (eventId) => {
 
     const client = connectToNotifications(eventId, (update) => {
       // update shape: { eventId, status, timestamp }
+      console.log("Received WS update:",update);
       setIsConnected(true);
       setCurrentStatus(update.status);
       setStatusHistory((prev) => {
