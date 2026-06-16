@@ -5,7 +5,7 @@ export const connectToNotifications = (
     eventId,
     onStatusUpdate,
 )=>{
-    const socket = new SockJS("http://16.176.139.239:8080/ws");
+    const socket = new SockJS("https://notiq.duckdns.org/ws");
     const client = new Client({
         webSocketFactory: () => socket,
         reconnectDelay: 5000,

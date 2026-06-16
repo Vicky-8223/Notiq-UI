@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api=axios.create({
-    baseURL: "http://16.176.139.239:8080",
+    baseURL: "https://notiq.duckdns.org",
     headers: {
         'Content-Type': "application/json"
     },
