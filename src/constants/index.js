@@ -42,6 +42,13 @@ export const NAV_ITEMS = [
     {id: "playground",label: "Playground", icon: "code"},
 ];
 export const PRIORITY_OPTIONS = ["HIGH", "MEDIUM", "LOW"];
+export const EVENT_TYPE_OPTIONS = [
+  "USER_REGISTERED",
+  "ORDER_PLACED",
+  "PAYMENT_FAILED",
+  "PASSWORD_RESET",
+  "SHIPPING_UPDATE",
+];
 export const CHANNEL_OPTIONS = [
   { value: "EMAIL",  label: "EMAIL",  available: true  },
   { value: "SMS",    label: "SMS",    available: false },

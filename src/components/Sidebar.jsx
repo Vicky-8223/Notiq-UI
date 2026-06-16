@@ -30,12 +30,12 @@ const Sidebar = () => {
   const getLinkStyles = ({ isActive }) =>
     `flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium mb-1 transition-all duration-200 border border-transparent
     ${isActive
-      ? "bg-gradient-to-r from-accent/10 to-accent/2 bg-surface2 text-accent2 border-accent/20 font-semibold shadow-[0_0_15px_rgba(99,102,241,0.08)]"
-      : "text-muted hover:bg-surface2/60 hover:text-slate-200 hover:border-slate-800/40"
+      ? "bg-blue-50 text-accent border-blue-100 font-semibold"
+      : "text-muted hover:bg-surface2 hover:text-[#202124] hover:border-border"
     }`;
 
   return (
-    <aside className="w-56 min-w-56 bg-surface border-r border-border flex flex-col py-4 px-3 select-none">
+    <aside className="w-56 min-w-56 bg-white border-r border-border flex flex-col py-4 px-3 select-none">
       {/* Main nav */}
       <div className="mb-6">
         <p className="text-[10px] font-semibold font-heading text-muted uppercase tracking-widest px-3 mb-2.5">
@@ -49,14 +49,14 @@ const Sidebar = () => {
               end={item.id === "overview"}
               className={getLinkStyles}
             >
-              <span className="opacity-90">{icons[item.icon]}</span>
+              <span className="opacity-80">{icons[item.icon]}</span>
               {item.label}
             </NavLink>
           ))}
         </div>
       </div>
 
-      <div className="h-px bg-border/60 mx-2 mb-6" />
+      <div className="h-px bg-border mx-2 mb-6" />
 
       {/* Developer section */}
       <div>
@@ -70,7 +70,7 @@ const Sidebar = () => {
               to={`/${item.id}`}
               className={getLinkStyles}
             >
-              <span className="opacity-90">{icons[item.icon]}</span>
+              <span className="opacity-80">{icons[item.icon]}</span>
               {item.label}
             </NavLink>
           ))}

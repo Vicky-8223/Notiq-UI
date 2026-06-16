@@ -8,7 +8,7 @@ import Playground  from "./pages/Playground";   // ← add this
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="h-screen bg-bg text-white flex flex-col overflow-hidden">
+      <div className="h-screen bg-white text-[#202124] flex flex-col overflow-hidden">
         <Topbar />
         <div className="flex flex-1 overflow-hidden h-full">
           <Sidebar />

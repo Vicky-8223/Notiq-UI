@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api=axios.create({
-    baseURL: import.meta.env.VITE_NOTIQ_BACKEND,
+    baseURL: "http://16.176.139.239:8080",
     headers: {
         'Content-Type': "application/json"
     },

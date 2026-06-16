@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { sendNotification } from "../api/notification";
-import { PRIORITY_OPTIONS, CHANNEL_OPTIONS } from "../constants";
+import { PRIORITY_OPTIONS, CHANNEL_OPTIONS, EVENT_TYPE_OPTIONS } from "../constants";
 import { useNotificationSocket } from "../hooks/useNotificationSocket";
 import DeliveryTimeline from "../components/DeliveryTimeline";
 
@@ -15,7 +15,7 @@ const FormLabel = ({ children }) => (
 const FormInput = ({ ...props }) => (
   <input
     {...props}
-    className="w-full bg-surface2/60 border border-border rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20 transition-all duration-150 font-medium"
+    className="w-full bg-surface2/60 border border-border rounded-lg px-3.5 py-2.5 text-xs text-black placeholder-slate-700 outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20 transition-all duration-150 font-medium"
   />
 );
 
@@ -23,7 +23,7 @@ const FormSelect = ({ children, ...props }) => (
   <div className="relative">
     <select
       {...props}
-      className="w-full bg-surface2/60 border border-border rounded-lg px-3.5 py-2.5 text-xs text-white outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20 transition-all duration-150 cursor-pointer appearance-none font-medium"
+      className="w-full bg-surface2/60 border border-border rounded-lg px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20 transition-all duration-150 cursor-pointer appearance-none font-medium"
     >
       {children}
     </select>
@@ -55,14 +55,14 @@ const PayloadBuilder = ({ pairs, onChange }) => {
             placeholder="key"
             value={pair.key}
             onChange={(e) => updateRow(i, "key", e.target.value)}
-            className="flex-1 bg-surface2/60 border border-border rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 outline-none focus:border-accent/60 transition-all font-mono"
+            className="flex-1 bg-surface2/60 border border-border rounded-lg px-3 py-2 text-xs text-slate-900 placeholder-slate-700 outline-none focus:border-accent/60 transition-all font-mono"
           />
           <span className="text-muted text-xs font-mono">:</span>
           <input
             placeholder="value"
             value={pair.value}
             onChange={(e) => updateRow(i, "value", e.target.value)}
-            className="flex-1 bg-surface2/60 border border-border rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 outline-none focus:border-accent/60 transition-all font-mono"
+            className="flex-1 bg-surface2/60 border border-border rounded-lg px-3 py-2 text-xs text-slate-900 placeholder-slate-700 outline-none focus:border-accent/60 transition-all font-mono"
           />
           <button
             onClick={() => removeRow(i)}
@@ -209,7 +209,7 @@ const Playground = () => {
         <div className="bg-surface border border-border rounded-2xl p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-6">
             <div className="w-1.5 h-1.5 rounded-full bg-accent animate-ping" />
-            <span className="text-xs font-bold font-heading text-white uppercase tracking-wider">
+            <span className="text-xs font-bold font-heading text-black uppercase tracking-wider">
               Compose Notification
             </span>
           </div>
@@ -227,13 +227,17 @@ const Playground = () => {
 
           <div className="mb-4">
             <FormLabel>Event type</FormLabel>
-            <FormInput
-              type="text"
-              placeholder="e.g. USER_REGISTERED"
+            <FormSelect
               value={eventType}
               onChange={(e) => setEventType(e.target.value)}
               disabled={sending}
-            />
+            >
+              {EVENT_TYPE_OPTIONS.map((type) => (
+                <option key={type} value={type} className="bg-surface2">
+                  {type}
+                </option>
+              ))}
+            </FormSelect>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">

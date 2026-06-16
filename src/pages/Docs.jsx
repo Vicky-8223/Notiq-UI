@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { CheckCircle2, Settings, Network, Mail, ShieldCheck, Database, Smartphone, Bell, RefreshCw, Palette, Hourglass, Lock, Activity, ArrowRight } from "lucide-react";
+import { CheckCircle2, Settings, Network, ShieldCheck, Database, Smartphone, Bell, RefreshCw, Palette, Hourglass, Lock, Activity, ArrowRight } from "lucide-react";
 import { KafkaIcon } from "../components/icons/KafkaIcon";
+import { MailIcon } from "../components/icons/MailIcon";
 
 const KafkaText = () => (
-  <span className="inline-flex items-center gap-1 font-semibold text-amber-400/90">
+  <span className="inline-flex items-center gap-1 font-semibold text-amber-600">
     <KafkaIcon className="w-3.5 h-3.5" />
     Kafka
   </span>
@@ -21,7 +22,7 @@ const sections = [
 ];
 
 const CodeBlock = ({ children }) => (
-  <pre className="bg-[#0b0f19] border border-border rounded-lg p-4 font-mono text-xs leading-relaxed overflow-x-auto my-3 text-indigo-300 relative group">
+  <pre className="bg-[#f8f9fa] border border-border rounded-lg p-4 font-mono text-xs leading-relaxed overflow-x-auto my-3 text-[#1967d2] relative group">
     {children}
   </pre>
 );
@@ -29,12 +30,12 @@ const CodeBlock = ({ children }) => (
 const EndpointBox = ({ method, path, children }) => {
   const isPost = method === "POST";
   return (
-    <div className="border border-border rounded-xl bg-surface2/30 overflow-hidden my-4">
-      <div className="flex items-center gap-3 bg-surface border-b border-border/60 px-4 py-3">
-        <span className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded ${isPost ? "text-emerald-400 bg-emerald-500/10 border border-emerald-500/20" : "text-sky-400 bg-sky-500/10 border border-sky-500/20"}`}>
+    <div className="border border-border rounded-xl bg-white overflow-hidden my-4 shadow-sm">
+      <div className="flex items-center gap-3 bg-[#f8f9fa] border-b border-border px-4 py-3">
+        <span className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded ${isPost ? "text-emerald-700 bg-emerald-50 border border-emerald-200" : "text-sky-700 bg-sky-50 border border-sky-200"}`}>
           {method}
         </span>
-        <span className="font-mono text-xs font-semibold text-white">{path}</span>
+        <span className="font-mono text-xs font-semibold text-[#202124]">{path}</span>
       </div>
       <div className="p-4">{children}</div>
     </div>
@@ -42,10 +43,10 @@ const EndpointBox = ({ method, path, children }) => {
 };
 
 const ParamTable = ({ rows }) => (
-  <div className="overflow-x-auto my-3 border border-border/60 rounded-lg">
+  <div className="overflow-x-auto my-3 border border-border rounded-lg">
     <table className="w-full text-xs border-collapse">
       <thead>
-        <tr className="bg-surface2/55 border-b border-border text-muted uppercase tracking-wide text-[9px]">
+        <tr className="bg-[#f8f9fa] border-b border-border text-muted uppercase tracking-wide text-[9px]">
           <th className="text-left px-3 py-2 font-bold font-heading">Field</th>
           <th className="text-left px-3 py-2 font-bold font-heading">Type</th>
           <th className="text-left px-3 py-2 font-bold font-heading">Required</th>
@@ -54,15 +55,15 @@ const ParamTable = ({ rows }) => (
       </thead>
       <tbody>
         {rows.map((row, i) => (
-          <tr key={i} className="border-b border-border/40 hover:bg-surface2/20 last:border-b-0">
-            <td className="px-3 py-2.5 font-mono text-accent2">{row.field}</td>
-            <td className="px-3 py-2.5 text-slate-400 font-mono text-[11px]">{row.type}</td>
+          <tr key={i} className="border-b border-border hover:bg-[#f8f9fa] last:border-b-0">
+            <td className="px-3 py-2.5 font-mono text-accent">{row.field}</td>
+            <td className="px-3 py-2.5 text-muted font-mono text-[11px]">{row.type}</td>
             <td className="px-3 py-2.5">
-              <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${row.required ? "text-rose-400 bg-rose-500/10 border border-rose-500/20" : "text-slate-500 bg-slate-800/40"}`}>
+              <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${row.required ? "text-rose-700 bg-rose-50 border border-rose-200" : "text-muted bg-[#f8f9fa] border border-border"}`}>
                 {row.required ? "required" : "optional"}
               </span>
             </td>
-            <td className="px-3 py-2.5 text-slate-300 leading-relaxed">{row.description}</td>
+            <td className="px-3 py-2.5 text-[#3c4043] leading-relaxed">{row.description}</td>
           </tr>
         ))}
       </tbody>
@@ -82,7 +83,7 @@ const Docs = () => {
     <div className="flex h-full w-full relative">
       
       {/* Sticky doc navigation */}
-      <aside className="w-56 min-w-56 border-r border-border/80 py-8 px-4 sticky top-0 h-full overflow-y-auto hidden lg:block bg-surface/30 select-none">
+      <aside className="w-56 min-w-56 border-r border-border py-8 px-4 sticky top-0 h-full overflow-y-auto hidden lg:block bg-white select-none">
         <p className="text-[10px] font-bold font-heading text-muted uppercase tracking-widest px-2.5 mb-3.5">
           Documentation
         </p>
@@ -93,8 +94,8 @@ const Docs = () => {
               onClick={() => scrollTo(s.id)}
               className={`block w-full text-left text-[11px] font-medium py-2 px-2.5 rounded-md transition-all duration-150 border-l-2
                 ${activeSection === s.id
-                  ? "border-accent bg-accent/5 text-white font-semibold"
-                  : "border-transparent text-muted hover:text-slate-200 hover:border-slate-800 hover:bg-surface2/40"
+                  ? "border-accent bg-blue-50 text-accent font-semibold"
+                  : "border-transparent text-muted hover:text-[#202124] hover:border-border hover:bg-[#f8f9fa]"
                 }`}
             >
               {s.label}
@@ -108,41 +109,41 @@ const Docs = () => {
         
         {/* SECTION: Overview */}
         <section id="doc-overview" className="space-y-4 pt-4">
-          <h1 className="text-3xl font-black font-heading text-white">Notiq Developer Documentation</h1>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <h1 className="text-3xl font-black font-heading text-[#202124]">Notiq Developer Documentation</h1>
+          <p className="text-sm text-muted leading-relaxed">
             Notiq is a distributed notification platform built using an event-driven microservices architecture. It decouples delivery logic from core services while providing robust operational guarantees.
           </p>
-          <div className="bg-surface2/40 border border-border rounded-xl p-4 space-y-2.5">
-            <h3 className="text-xs font-bold font-mono text-accent2 uppercase tracking-wide">Platform Guarantees:</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-xs font-medium text-slate-300">
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Durable Persistence</div>
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Event-Based Delivery</div>
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Delivery Tracking</div>
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Retry Orchestration</div>
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> DLQ Handling</div>
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Idempotency Keys</div>
+          <div className="bg-[#f8f9fa] border border-border rounded-xl p-4 space-y-2.5">
+            <h3 className="text-xs font-bold font-mono text-accent uppercase tracking-wide">Platform Guarantees:</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-xs font-medium text-[#3c4043]">
+              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Durable Persistence</div>
+              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Event-Based Delivery</div>
+              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Delivery Tracking</div>
+              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Retry Orchestration</div>
+              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> DLQ Handling</div>
+              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Idempotency Keys</div>
             </div>
           </div>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <p className="text-sm text-muted leading-relaxed">
             Every service communicates through a shared contract known as the <code>NotificationEvent</code>. This schema acts as the standard communication unit across the entire system.
           </p>
         </section>
 
-        <div className="h-px bg-border/60" />
+        <div className="h-px bg-border" />
 
         {/* SECTION: System Components */}
         <section id="doc-components" className="space-y-4">
-          <h2 className="text-xl font-bold font-heading text-white">System Components</h2>
+          <h2 className="text-xl font-bold font-heading text-[#202124]">System Components</h2>
           <p className="text-xs text-muted">
             The platform consists of four primary decoupled units coordinating delivery.
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Core Service */}
-            <div className="bg-surface border border-border rounded-xl p-5 space-y-3">
+            <div className="bg-white border border-border rounded-xl p-5 space-y-3 shadow-sm">
               <div className="flex items-center gap-2">
-                <span className="text-accent2"><Settings className="w-5 h-5" /></span>
-                <h3 className="text-sm font-bold font-heading text-white">Core Service</h3>
+                <span className="text-accent"><Settings className="w-5 h-5" /></span>
+                <h3 className="text-sm font-bold font-heading text-[#202124]">Core Service</h3>
               </div>
               <ul className="space-y-1.5 text-xs text-muted list-disc list-inside">
                 <li>Accept incoming API notification requests</li>
@@ -150,16 +151,16 @@ const Docs = () => {
                 <li>Prevent duplicate transaction processing</li>
                 <li>Orchestrate retry increments & DLQ transitions</li>
               </ul>
-              <div className="pt-2 text-[10px] font-mono text-accent2">
-                Database: <span className="text-slate-300">PostgreSQL</span>
+              <div className="pt-2 text-[10px] font-mono text-accent">
+                Database: <span className="text-[#3c4043]">PostgreSQL</span>
               </div>
             </div>
 
             {/* Dispatcher Service */}
-            <div className="bg-surface border border-border rounded-xl p-5 space-y-3">
+            <div className="bg-white border border-border rounded-xl p-5 space-y-3 shadow-sm">
               <div className="flex items-center gap-2">
-                <span className="text-purple-400"><Network className="w-5 h-5" /></span>
-                <h3 className="text-sm font-bold font-heading text-white">Dispatcher Service</h3>
+                <span className="text-purple-600"><Network className="w-5 h-5" /></span>
+                <h3 className="text-sm font-bold font-heading text-[#202124]">Dispatcher Service</h3>
               </div>
               <ul className="space-y-1.5 text-xs text-muted list-disc list-inside">
                 <li>Consume notification requests from <KafkaText /></li>
@@ -170,10 +171,10 @@ const Docs = () => {
             </div>
 
             {/* Email Service */}
-            <div className="bg-surface border border-border rounded-xl p-5 space-y-3">
+            <div className="bg-white border border-border rounded-xl p-5 space-y-3 shadow-sm">
               <div className="flex items-center gap-2">
-                <span className="text-emerald-400"><Mail className="w-5 h-5" /></span>
-                <h3 className="text-sm font-bold font-heading text-white">Email Service</h3>
+                <MailIcon className="w-5 h-5" />
+                <h3 className="text-sm font-bold font-heading text-[#202124]">Email Service</h3>
               </div>
               <ul className="space-y-1.5 text-xs text-muted list-disc list-inside">
                 <li>Consume channel email requests</li>
@@ -183,32 +184,32 @@ const Docs = () => {
             </div>
 
             {/* Apache Kafka */}
-            <div className="bg-surface border border-border rounded-xl p-5 space-y-3">
+            <div className="bg-white border border-border rounded-xl p-5 space-y-3 shadow-sm">
               <div className="flex items-center gap-2">
-                <span className="text-amber-400"><KafkaIcon className="w-5 h-5" /></span>
-                <h3 className="text-sm font-bold font-heading text-white"><KafkaText /></h3>
+                <KafkaIcon className="w-5 h-5" />
+                <h3 className="text-sm font-bold font-heading text-[#202124]"><KafkaText /></h3>
               </div>
               <p className="text-xs text-muted">
                 Acts as the communication backbone. The primary topics routing notifications:
               </p>
-              <div className="flex flex-wrap gap-1.5 text-[9px] font-mono text-amber-400 font-semibold select-all">
-                <span className="bg-amber-500/5 border border-amber-500/20 px-1.5 py-0.5 rounded">notification-request</span>
-                <span className="bg-amber-500/5 border border-amber-500/20 px-1.5 py-0.5 rounded">notification-dispatched</span>
-                <span className="bg-amber-500/5 border border-amber-500/20 px-1.5 py-0.5 rounded">email-notifications</span>
-                <span className="bg-amber-500/5 border border-amber-500/20 px-1.5 py-0.5 rounded">notification-delivered</span>
-                <span className="bg-amber-500/5 border border-amber-500/20 px-1.5 py-0.5 rounded">notification-failed</span>
-                <span className="bg-amber-500/5 border border-amber-500/20 px-1.5 py-0.5 rounded">notification-retry</span>
-                <span className="bg-amber-500/5 border border-amber-500/20 px-1.5 py-0.5 rounded">notification-dlq</span>
+              <div className="flex flex-wrap gap-1.5 text-[9px] font-mono text-amber-700 font-semibold select-all">
+                <span className="bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">notification-request</span>
+                <span className="bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">notification-dispatched</span>
+                <span className="bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">email-notifications</span>
+                <span className="bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">notification-delivered</span>
+                <span className="bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">notification-failed</span>
+                <span className="bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">notification-retry</span>
+                <span className="bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">notification-dlq</span>
               </div>
             </div>
           </div>
         </section>
 
-        <div className="h-px bg-border/60" />
+        <div className="h-px bg-border" />
 
         {/* SECTION: Lifecycle */}
         <section id="doc-lifecycle" className="space-y-4">
-          <h2 className="text-xl font-bold font-heading text-white">Notification Lifecycle</h2>
+          <h2 className="text-xl font-bold font-heading text-[#202124]">Notification Lifecycle</h2>
           <p className="text-xs text-muted">
             The standard step progression of a notification event as it flows through the pipelines.
           </p>
@@ -218,97 +219,97 @@ const Docs = () => {
             
             {/* Step 1 */}
             <div className="relative">
-              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[9px] font-bold text-white">
+              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-[#f8f9fa] border border-border flex items-center justify-center text-[9px] font-bold text-[#202124]">
                 1
               </div>
-              <h3 className="text-xs font-bold text-white">Publish request</h3>
+              <h3 className="text-xs font-bold text-[#202124]">Publish request</h3>
               <p className="text-xs text-muted mt-0.5">Client sends payload. Core persists and sets status.</p>
               <div className="flex gap-2 mt-1.5 font-mono text-[9px]">
-                <span className="text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded">RECEIVED</span>
-                <span className="text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">Topic: notification-request</span>
+                <span className="text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">RECEIVED</span>
+                <span className="text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">Topic: notification-request</span>
               </div>
             </div>
 
             {/* Step 2 */}
             <div className="relative">
-              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[9px] font-bold text-white">
+              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-[#f8f9fa] border border-border flex items-center justify-center text-[9px] font-bold text-[#202124]">
                 2
               </div>
-              <h3 className="text-xs font-bold text-white">Dispatcher consumes</h3>
+              <h3 className="text-xs font-bold text-[#202124]">Dispatcher consumes</h3>
               <p className="text-xs text-muted mt-0.5">Dispatcher routes notification to the corresponding channel queue.</p>
               <div className="flex gap-2 mt-1.5 font-mono text-[9px]">
-                <span className="text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-1.5 py-0.5 rounded">DISPATCHED</span>
-                <span className="text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">Topic: notification-dispatched</span>
+                <span className="text-accent bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded">DISPATCHED</span>
+                <span className="text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">Topic: notification-dispatched</span>
               </div>
             </div>
 
             {/* Step 3 */}
             <div className="relative">
-              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[9px] font-bold text-white">
+              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-[#f8f9fa] border border-border flex items-center justify-center text-[9px] font-bold text-[#202124]">
                 3
               </div>
-              <h3 className="text-xs font-bold text-white">Channel processes</h3>
+              <h3 className="text-xs font-bold text-[#202124]">Channel processes</h3>
               <p className="text-xs text-muted mt-0.5">Email service consumes the routing event, ready to relay via SMTP.</p>
               <div className="flex gap-2 mt-1.5 font-mono text-[9px]">
-                <span className="text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">PROCESSING</span>
+                <span className="text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">PROCESSING</span>
               </div>
             </div>
 
             {/* Step 4 */}
             <div className="relative">
-              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[9px] font-bold text-white">
+              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-[#f8f9fa] border border-border flex items-center justify-center text-[9px] font-bold text-[#202124]">
                 4
               </div>
-              <h3 className="text-xs font-bold text-white">Final resolution</h3>
+              <h3 className="text-xs font-bold text-[#202124]">Final resolution</h3>
               <p className="text-xs text-muted mt-0.5">Delivery completes. In case of transient failure, the event is marked for retry.</p>
               <div className="flex flex-wrap gap-2 mt-1.5 font-mono text-[9px]">
-                <span className="text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded">DELIVERED</span>
-                <span className="text-rose-400 bg-rose-500/10 border border-rose-500/20 px-1.5 py-0.5 rounded">FAILED</span>
-                <span className="text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">Topic: notification-delivered / notification-failed</span>
+                <span className="text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">DELIVERED</span>
+                <span className="text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded">FAILED</span>
+                <span className="text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">Topic: notification-delivered / notification-failed</span>
               </div>
             </div>
 
             {/* Step 5 */}
             <div className="relative">
-              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[9px] font-bold text-white">
+              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-[#f8f9fa] border border-border flex items-center justify-center text-[9px] font-bold text-[#202124]">
                 5
               </div>
-              <h3 className="text-xs font-bold text-white">Retry flow</h3>
+              <h3 className="text-xs font-bold text-[#202124]">Retry flow</h3>
               <p className="text-xs text-muted mt-0.5">Core increment-retry logs are updated, and the message returns to processing status.</p>
               <div className="flex gap-2 mt-1.5 font-mono text-[9px]">
-                <span className="text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">PROCESSING</span>
-                <span className="text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">Topic: notification-retry</span>
+                <span className="text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">PROCESSING</span>
+                <span className="text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">Topic: notification-retry</span>
               </div>
             </div>
 
             {/* Step 6 */}
             <div className="relative">
-              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-red-950 border border-red-500 flex items-center justify-center text-[9px] font-bold text-red-400">
+              <div className="absolute -left-[30px] top-0.5 w-4.5 h-4.5 rounded-full bg-rose-50 border border-rose-400 flex items-center justify-center text-[9px] font-bold text-rose-600">
                 !
               </div>
-              <h3 className="text-xs font-bold text-red-400">Dead letter queue (DLQ)</h3>
+              <h3 className="text-xs font-bold text-rose-600">Dead letter queue (DLQ)</h3>
               <p className="text-xs text-muted mt-0.5">If retryCount exceeds three attempts, the event goes to DLQ for developers to analyze.</p>
               <div className="flex gap-2 mt-1.5 font-mono text-[9px]">
-                <span className="text-rose-400 bg-rose-500/10 border border-rose-500/20 px-1.5 py-0.5 rounded">DLQ</span>
-                <span className="text-rose-400 bg-rose-500/10 border border-rose-500/20 px-1.5 py-0.5 rounded">Topic: notification-dlq</span>
+                <span className="text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded">DLQ</span>
+                <span className="text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded">Topic: notification-dlq</span>
               </div>
             </div>
 
           </div>
         </section>
 
-        <div className="h-px bg-border/60" />
+        <div className="h-px bg-border" />
 
         {/* SECTION: Idempotency */}
         <section id="doc-idempotency" className="space-y-4">
-          <h2 className="text-xl font-bold font-heading text-white">Idempotency & Deduplication</h2>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <h2 className="text-xl font-bold font-heading text-[#202124]">Idempotency & Deduplication</h2>
+          <p className="text-sm text-muted leading-relaxed">
             <KafkaText /> guarantees <em>at-least-once</em> delivery semantics, which means network blips can cause duplicate messages. 
             To prevent users from receiving duplicate notifications:
           </p>
-          <div className="bg-surface border border-border rounded-xl p-5 space-y-3 text-xs leading-relaxed text-slate-300">
-            <div className="flex items-center gap-1.5 font-semibold text-white">
-              <ShieldCheck className="w-4 h-4 text-cyan-400" />
+          <div className="bg-white border border-border rounded-xl p-5 space-y-3 text-xs leading-relaxed text-[#3c4043] shadow-sm">
+            <div className="flex items-center gap-1.5 font-semibold text-[#202124]">
+              <ShieldCheck className="w-4 h-4 text-cyan-600" />
               Deduplication Safeguards:
             </div>
             <ol className="list-decimal list-inside space-y-1.5">
@@ -331,23 +332,23 @@ repository.save(notification);`}
 
         {/* SECTION: Retry Strategy */}
         <section id="doc-retry" className="space-y-4">
-          <h2 className="text-xl font-bold font-heading text-white">Retry Strategy</h2>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <h2 className="text-xl font-bold font-heading text-[#202124]">Retry Strategy</h2>
+          <p className="text-sm text-muted leading-relaxed">
             Temporary failures (such as mail server latency, network timeout, or SMTP throttling) are caught automatically. The system increments the retry loop up to 3 times before abandoning.
           </p>
 
           {/* Retry loop flowchart */}
-          <div className="bg-surface border border-border rounded-xl p-5 select-none overflow-x-auto">
+          <div className="bg-white border border-border rounded-xl p-5 select-none overflow-x-auto shadow-sm">
             <div className="flex items-center justify-center gap-3 font-mono text-[10px] font-bold min-w-[500px]">
-              <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 px-3 py-1.5 rounded">FAILED</div>
-              <ArrowRight className="w-4 h-4 text-slate-500" />
-              <div className="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3 py-1.5 rounded">RETRY INCREMENT</div>
-              <ArrowRight className="w-4 h-4 text-slate-500" />
-              <div className="bg-surface2 border border-border text-slate-300 px-3 py-1.5 rounded">PROCESSING</div>
-              <ArrowRight className="w-4 h-4 text-slate-500" />
-              <div className="bg-indigo-500/10 border border-accent/20 text-accent2 px-3 py-1.5 rounded">ATTEMPT #1..3</div>
-              <ArrowRight className="w-4 h-4 text-slate-500" />
-              <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-3 py-1.5 rounded">DLQ (Limit Reached)</div>
+              <div className="bg-rose-50 border border-rose-200 text-rose-700 px-3 py-1.5 rounded">FAILED</div>
+              <ArrowRight className="w-4 h-4 text-muted" />
+              <div className="bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 rounded">RETRY INCREMENT</div>
+              <ArrowRight className="w-4 h-4 text-muted" />
+              <div className="bg-[#f8f9fa] border border-border text-[#3c4043] px-3 py-1.5 rounded">PROCESSING</div>
+              <ArrowRight className="w-4 h-4 text-muted" />
+              <div className="bg-blue-50 border border-blue-200 text-accent px-3 py-1.5 rounded">ATTEMPT #1..3</div>
+              <ArrowRight className="w-4 h-4 text-muted" />
+              <div className="bg-rose-50 border border-rose-200 text-rose-700 px-3 py-1.5 rounded">DLQ (Limit Reached)</div>
             </div>
           </div>
           
@@ -363,23 +364,23 @@ if (event.retryCount() < 3) {
           </CodeBlock>
         </section>
 
-        <div className="h-px bg-border/60" />
+        <div className="h-px bg-border" />
 
         {/* SECTION: Database Model */}
         <section id="doc-db-model" className="space-y-4">
-          <h2 className="text-xl font-bold font-heading text-white">Database Model</h2>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <h2 className="text-xl font-bold font-heading text-[#202124]">Database Model</h2>
+          <p className="text-sm text-muted leading-relaxed">
             The Postgres <code>notifications</code> table represents the persistent state and operational source of truth.
           </p>
 
           {/* Table list */}
-          <div className="border border-border/85 rounded-xl overflow-hidden text-xs">
-            <div className="grid grid-cols-3 bg-surface2/60 border-b border-border/80 p-3 font-bold font-heading text-white tracking-wide">
+          <div className="border border-border rounded-xl overflow-hidden text-xs shadow-sm">
+            <div className="grid grid-cols-3 bg-[#f8f9fa] border-b border-border p-3 font-bold font-heading text-[#202124] tracking-wide">
               <div>Field Name</div>
               <div>Field Type</div>
               <div>Usage Role</div>
             </div>
-            <div className="divide-y divide-border/40 font-mono">
+            <div className="divide-y divide-border font-mono">
               {[
                 { name: "notificationId", type: "UUID (Primary Key)", role: "Unique record ID" },
                 { name: "eventId",        type: "VARCHAR (Unique)",  role: "Idempotency validation key" },
@@ -395,9 +396,9 @@ if (event.retryCount() < 3) {
                 { name: "createdAt",      type: "TIMESTAMP",         role: "Creation audit timestamp" },
                 { name: "updatedAt",      type: "TIMESTAMP",         role: "Last transaction timestamp" },
               ].map((field) => (
-                <div key={field.name} className="grid grid-cols-3 p-3 text-slate-300 hover:bg-surface2/10">
-                  <div className="text-accent2 font-semibold font-mono">{field.name}</div>
-                  <div className="text-[11px] text-slate-400 font-mono">{field.type}</div>
+                <div key={field.name} className="grid grid-cols-3 p-3 text-[#3c4043] hover:bg-[#f8f9fa]">
+                  <div className="text-accent font-semibold font-mono">{field.name}</div>
+                  <div className="text-[11px] text-muted font-mono">{field.type}</div>
                   <div className="text-xs text-muted font-sans font-medium">{field.role}</div>
                 </div>
               ))}
@@ -405,11 +406,11 @@ if (event.retryCount() < 3) {
           </div>
         </section>
 
-        <div className="h-px bg-border/60" />
+        <div className="h-px bg-border" />
 
         {/* SECTION: API Endpoints */}
         <section id="doc-endpoints" className="space-y-4">
-          <h2 className="text-xl font-bold font-heading text-white">API Reference</h2>
+          <h2 className="text-xl font-bold font-heading text-[#202124]">API Reference</h2>
           <p className="text-xs text-muted">
             REST endpoints provided by Notiq for publishing and tracing notifications.
           </p>
@@ -472,23 +473,23 @@ if (event.retryCount() < 3) {
           </EndpointBox>
         </section>
 
-        <div className="h-px bg-border/60" />
+        <div className="h-px bg-border" />
 
         {/* SECTION: Why Kafka & Postgres */}
         <section id="doc-design-decisions" className="space-y-6">
-          <h2 className="text-xl font-bold font-heading text-white">Architectural Choices</h2>
+          <h2 className="text-xl font-bold font-heading text-[#202124]">Architectural Choices</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Why Kafka */}
-            <div className="bg-surface2/30 border border-border rounded-xl p-6 space-y-3">
-              <h3 className="text-sm font-bold font-heading text-white flex items-center gap-2">
-                <span className="text-amber-400"><KafkaIcon className="w-4 h-4" /></span>
+            <div className="bg-amber-50 border border-amber-100 rounded-xl p-6 space-y-3">
+              <h3 className="text-sm font-bold font-heading text-[#202124] flex items-center gap-2">
+                <KafkaIcon className="w-4 h-4" />
                 Why <KafkaText />?
               </h3>
               <p className="text-xs text-muted leading-relaxed">
                 <KafkaText /> handles distributed message queue duties:
               </p>
-              <ul className="space-y-1.5 text-xs text-slate-300 font-medium">
+              <ul className="space-y-1.5 text-xs text-[#3c4043] font-medium">
                 <li><strong>Durability:</strong> Events are committed to disks across cluster nodes.</li>
                 <li><strong>Horizontal Scale:</strong> Partitions distribute consumers cleanly.</li>
                 <li><strong>Event Replays:</strong> Easily inspect/replay previous outages.</li>
@@ -497,15 +498,15 @@ if (event.retryCount() < 3) {
             </div>
 
             {/* Why Postgres */}
-            <div className="bg-surface2/30 border border-border rounded-xl p-6 space-y-3">
-              <h3 className="text-sm font-bold font-heading text-white flex items-center gap-2">
-                <span className="text-indigo-400"><Database className="w-4 h-4" /></span>
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 space-y-3">
+              <h3 className="text-sm font-bold font-heading text-[#202124] flex items-center gap-2">
+                <span className="text-accent"><Database className="w-4 h-4" /></span>
                 Why PostgreSQL?
               </h3>
               <p className="text-xs text-muted leading-relaxed">
                 <KafkaText /> handles stream flow, while PostgreSQL holds static audit states:
               </p>
-              <ul className="space-y-1.5 text-xs text-slate-300 font-medium">
+              <ul className="space-y-1.5 text-xs text-[#3c4043] font-medium">
                 <li><strong>Fast Dashboard Queries:</strong> Fast filters without replaying topics.</li>
                 <li><strong>State Checks:</strong> Perfect for deduplication/idempotency audits.</li>
                 <li><strong>Long-Term History:</strong> Clean auditing separate from stream retention limits.</li>
@@ -514,20 +515,20 @@ if (event.retryCount() < 3) {
           </div>
         </section>
 
-        <div className="h-px bg-border/60" />
+        <div className="h-px bg-border" />
 
         {/* SECTION: Scalability & Roadmap */}
         <section id="doc-scalability-roadmap" className="space-y-6">
-          <h2 className="text-xl font-bold font-heading text-white">Scalability & Roadmap</h2>
+          <h2 className="text-xl font-bold font-heading text-[#202124]">Scalability & Roadmap</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Scalability card */}
-            <div className="bg-surface border border-border rounded-xl p-5 space-y-3">
-              <h3 className="text-xs font-bold font-mono text-accent2 uppercase tracking-wide">Scale Architecture</h3>
+            <div className="bg-white border border-border rounded-xl p-5 space-y-3 shadow-sm">
+              <h3 className="text-xs font-bold font-mono text-accent uppercase tracking-wide">Scale Architecture</h3>
               <p className="text-xs text-muted leading-relaxed">
                 Notiq achieves low-latency parallel scale using:
               </p>
-              <ul className="space-y-1.5 text-xs text-slate-300 font-medium">
+              <ul className="space-y-1.5 text-xs text-[#3c4043] font-medium">
                 <li><strong>Partitions:</strong> Distributed routing channels.</li>
                 <li><strong>Consumer Groups:</strong> Scale instances to share throughput.</li>
                 <li><strong>Stateless Cores:</strong> Run nodes in Kubernetes without sticky session locks.</li>
@@ -535,9 +536,9 @@ if (event.retryCount() < 3) {
             </div>
 
             {/* Roadmap card */}
-            <div className="bg-surface border border-border rounded-xl p-5 space-y-3">
-              <h3 className="text-xs font-bold font-mono text-indigo-400 uppercase tracking-wide">Future Roadmap</h3>
-              <ul className="grid grid-cols-2 gap-x-2 gap-y-2 text-[11px] font-semibold text-slate-300">
+            <div className="bg-white border border-border rounded-xl p-5 space-y-3 shadow-sm">
+              <h3 className="text-xs font-bold font-mono text-indigo-600 uppercase tracking-wide">Future Roadmap</h3>
+              <ul className="grid grid-cols-2 gap-x-2 gap-y-2 text-[11px] font-semibold text-[#3c4043]">
                 <li className="flex items-center gap-1.5"><Smartphone className="w-3.5 h-3.5 text-muted" /> SMS Service</li>
                 <li className="flex items-center gap-1.5"><Bell className="w-3.5 h-3.5 text-muted" /> Push Service</li>
                 <li className="flex items-center gap-1.5"><RefreshCw className="w-3.5 h-3.5 text-muted" /> WebSockets Sync</li>

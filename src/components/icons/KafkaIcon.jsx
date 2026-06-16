@@ -1,13 +1,11 @@
-import React from 'react';
+import kafkaPng from './kafka.png';
 
-export const KafkaIcon = ({ className = "w-6 h-6", ...props }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    className={className} 
+export const KafkaIcon = ({ className = "w-6 h-6", style, ...props }) => (
+  <img
+    src={kafkaPng}
+    alt="Kafka"
+    className={className}
+    style={{ objectFit: 'contain', ...style }}
     {...props}
-  >
-    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.892 7.027c1.332 0 2.418 1.086 2.418 2.418s-1.086 2.418-2.418 2.418-2.418-1.086-2.418-2.418 1.086-2.418 2.418-2.418zm0 9.946c-1.332 0-2.418-1.086-2.418-2.418s1.086-2.418 2.418-2.418 2.418 1.086 2.418 2.418-1.086 2.418-2.418 2.418zm6.306-2.827c-1.332 0-2.418-1.086-2.418-2.418s1.086-2.418 2.418-2.418 2.418 1.086 2.418 2.418-1.086 2.418-2.418 2.418zm0-4.292c-1.332 0-2.418-1.086-2.418-2.418s1.086-2.418 2.418-2.418 2.418 1.086 2.418 2.418-1.086 2.418-2.418 2.418z" />
-  </svg>
+  />
 );

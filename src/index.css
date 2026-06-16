@@ -6,22 +6,22 @@
 @tailwind utilities;
 
 :root {
-  --text: #9ca3af;
-  --text-h: #f8fafc;
-  --bg: #05070f;
-  --border: #1d2433;
-  --code-bg: #121826;
-  --accent: #6366f1;
-  --accent-bg: rgba(99, 102, 241, 0.1);
-  --accent-border: rgba(99, 102, 241, 0.4);
-  --shadow: rgba(0, 0, 0, 0.5) 0 10px 15px -3px, rgba(0, 0, 0, 0.3) 0 4px 6px -2px;
+  --text: #3c4043;
+  --text-h: #202124;
+  --bg: #ffffff;
+  --border: #e8eaed;
+  --code-bg: #f8f9fa;
+  --accent: #1a73e8;
+  --accent-bg: rgba(26, 115, 232, 0.08);
+  --accent-border: rgba(26, 115, 232, 0.3);
+  --shadow: rgba(60, 64, 67, 0.15) 0 2px 6px 0, rgba(60, 64, 67, 0.08) 0 1px 3px 0;
 
   --sans: 'Inter', system-ui, -apple-system, sans-serif;
   --heading: 'Outfit', system-ui, -apple-system, sans-serif;
   --mono: 'JetBrains Mono', monospace;
 
   font: 15px/1.6 var(--sans);
-  color-scheme: dark;
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -54,31 +54,30 @@ h1, h2, h3, h4, h5, h6 {
 code {
   font-family: var(--mono);
   font-size: 13px;
-  background: var(--code-bg);
-  border: 1px solid var(--border);
+  background: #f1f3f4;
+  border: 1px solid #e8eaed;
   padding: 2px 6px;
   border-radius: 4px;
-  color: #a5b4fc;
+  color: #1967d2;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #05070f;
+  background: #f8f9fa;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #dadce0;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #bdc1c6;
 }
 
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
-
