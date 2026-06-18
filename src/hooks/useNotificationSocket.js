@@ -1,105 +1,73 @@
+// hooks/useNotificationSocket.js
 import { useEffect, useRef, useState } from "react";
-import { connectToNotifications } from "../api/websocket";
+import { connectToNotifications } from "../api/sse";
 import { NOTIFICATION_STATUS } from "../constants";
 
 export const useNotificationSocket = (eventId) => {
-
     const [statusHistory, setStatusHistory] = useState([]);
     const [currentStatus, setCurrentStatus] = useState(null);
-    const [isConnected, setIsConnected] = useState(false);
-    const [error, setError] = useState(null);
+    const [isConnected,   setIsConnected]   = useState(false);
+    const [error,         setError]         = useState(null);
 
-    const clientRef = useRef(null);
+    const esRef = useRef(null);
 
     useEffect(() => {
-
         if (!eventId) return;
 
-        setStatusHistory([
-            {
-                status: NOTIFICATION_STATUS.RECEIVED,
-                timestamp: new Date().toISOString()
-            }
-        ]);
-
+        // Seed the initial RECEIVED status immediately
+        setStatusHistory([{
+            status:    NOTIFICATION_STATUS.RECEIVED,
+            timestamp: new Date().toISOString()
+        }]);
         setCurrentStatus(NOTIFICATION_STATUS.RECEIVED);
         setIsConnected(false);
         setError(null);
 
         let mounted = true;
 
-        connectToNotifications(
+        const eventSource = connectToNotifications(
             eventId,
 
+            // onStatusUpdate
             (update) => {
                 if (!mounted) return;
-
                 setCurrentStatus(update.status);
-
                 setStatusHistory((prev) => {
-
-                    const alreadyExists = prev.some(
-                        (s) => s.status === update.status
-                    );
-
-                    if (alreadyExists) {
-                        return prev;
-                    }
-
-                    return [
-                        ...prev,
-                        {
-                            status: update.status,
-                            timestamp: update.timestamp
-                        }
-                    ];
+                    const alreadyExists = prev.some((s) => s.status === update.status);
+                    if (alreadyExists) return prev;
+                    return [...prev, {
+                        status:    update.status,
+                        timestamp: update.timestamp
+                    }];
                 });
             },
 
+            // onConnected
             () => {
                 if (!mounted) return;
-
-                console.log(
-                    "WebSocket Connected At:",
-                    new Date().toISOString()
-                );
-
                 setIsConnected(true);
             },
 
+            // onError
             (err) => {
                 if (!mounted) return;
-
-                console.error(err);
                 setError(err);
+                setIsConnected(false);
             }
-        )
-            .then((client) => {
-                clientRef.current = client;
-            })
-            .catch((err) => {
-                console.error(err);
-                setError(err);
-            });
+        );
+
+        esRef.current = eventSource;
 
         return () => {
-
             mounted = false;
-
-            if (clientRef.current) {
-                clientRef.current.deactivate();
-                clientRef.current = null;
+            if (esRef.current) {
+                esRef.current.close();   // SSE cleanup — replaces client.deactivate()
+                esRef.current = null;
             }
-
             setIsConnected(false);
         };
 
     }, [eventId]);
 
-    return {
-        statusHistory,
-        currentStatus,
-        isConnected,
-        error
-    };
+    return { statusHistory, currentStatus, isConnected, error };
 };
