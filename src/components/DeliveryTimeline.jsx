@@ -91,7 +91,7 @@ const ConnectorLine = ({ topState, bottomState }) => {
 
 const TimelineRow = ({ step, state, timestamp, isLast }) => {
   const labelStyles = {
-    done:    "text-white font-semibold",
+    done:    "text-green-400 font-semibold",
     active:  "text-accent2 font-bold",
     pending: "text-muted font-medium",
     failed:  "text-rose-400 font-bold",

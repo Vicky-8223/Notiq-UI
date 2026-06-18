@@ -329,7 +329,7 @@ const Playground = () => {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span className="text-xs font-bold font-heading text-white uppercase tracking-wider">
+              <span className="text-xs font-bold font-heading text-black uppercase tracking-wider">
                 Delivery Timeline
               </span>
             </div>
