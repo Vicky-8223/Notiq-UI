@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { connectToNotifications } from "../api/sse";
 import { NOTIFICATION_STATUS } from "../constants";
 
+const TERMINAL_STATUSES = ["DELIVERED", "FAILED", "DLQ"];
+
 export const useNotificationSocket = (eventId) => {
     const [statusHistory, setStatusHistory] = useState([]);
     const [currentStatus, setCurrentStatus] = useState(null);
@@ -11,10 +13,18 @@ export const useNotificationSocket = (eventId) => {
 
     const esRef = useRef(null);
 
+    // ── Helper to close SSE cleanly ──────────────────────
+    const closeSSE = () => {
+        if (esRef.current) {
+            esRef.current.close();
+            esRef.current = null;
+        }
+        setIsConnected(false);
+    };
+
     useEffect(() => {
         if (!eventId) return;
 
-        // Seed the initial RECEIVED status immediately
         setStatusHistory([{
             status:    NOTIFICATION_STATUS.RECEIVED,
             timestamp: new Date().toISOString()
@@ -28,9 +38,10 @@ export const useNotificationSocket = (eventId) => {
         const eventSource = connectToNotifications(
             eventId,
 
-            // onStatusUpdate
+            // onStatusUpdate ── FIX 1: close on terminal status
             (update) => {
                 if (!mounted) return;
+
                 setCurrentStatus(update.status);
                 setStatusHistory((prev) => {
                     const alreadyExists = prev.some((s) => s.status === update.status);
@@ -40,6 +51,11 @@ export const useNotificationSocket = (eventId) => {
                         timestamp: update.timestamp
                     }];
                 });
+
+                // Close SSE cleanly once pipeline is finished
+                if (TERMINAL_STATUSES.includes(update.status)) {
+                    closeSSE();
+                }
             },
 
             // onConnected
@@ -48,10 +64,11 @@ export const useNotificationSocket = (eventId) => {
                 setIsConnected(true);
             },
 
-            // onError
+            // onError ── FIX 2: ignore error if we closed it intentionally
             (err) => {
                 if (!mounted) return;
-                setError(err);
+                if (!esRef.current) return; // we closed it ourselves — not a real error
+                setError("SSE connection failed");
                 setIsConnected(false);
             }
         );
@@ -60,11 +77,7 @@ export const useNotificationSocket = (eventId) => {
 
         return () => {
             mounted = false;
-            if (esRef.current) {
-                esRef.current.close();   // SSE cleanup — replaces client.deactivate()
-                esRef.current = null;
-            }
-            setIsConnected(false);
+            closeSSE();
         };
 
     }, [eventId]);

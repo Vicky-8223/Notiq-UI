@@ -20,6 +20,7 @@ export const connectToNotifications = (
     });
 
     eventSource.onerror = (err) => {
+        if (eventSource.readyState === EventSource.CLOSED) return;
         console.error("SSE error:", err);
         if (onError) onError("SSE connection failed");
     };
