@@ -80,7 +80,7 @@ const Docs = () => {
   };
 
   return (
-    <div className="flex h-full w-full relative">
+    <div className="flex h-full w-full">
       
       {/* Sticky doc navigation */}
       <aside className="w-56 min-w-56 border-r border-border py-8 px-4 sticky top-0 h-full overflow-y-auto hidden lg:block bg-white select-none">
@@ -105,7 +105,7 @@ const Docs = () => {
       </aside>
 
       {/* Main Doc Content Area */}
-      <div className="flex-1 overflow-y-auto px-6 lg:px-12 py-8 lg:py-10 max-w-4xl space-y-12">
+      <div className="flex-1 overflow-y-auto px-6 lg:px-12 py-8 lg:py-10 max-w-6xl space-y-12">
         
         {/* SECTION: Overview */}
         <section id="doc-overview" className="space-y-4 pt-4">
